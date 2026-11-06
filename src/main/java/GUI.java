@@ -21,11 +21,10 @@ import java.util.TimeZone;
 /**
  * Displays temperature and mixing ratio over time.
  * <p>
- * Left axis: temperature in degrees Celsius.
- * Right axis: mixing ratio in g/kg.
+ * Left axis: temperature in degrees Celsius
+ * Right axis: relative humidity in %
  * </p>
  * Input timestamps are interpreted as UTC.
- * Input mixing ratios are expected in kg/kg.
  */
 public class GUI extends JFrame {
 
@@ -100,7 +99,7 @@ public class GUI extends JFrame {
         XYSeriesCollection tdDataset = datasets[2];
 
         JFreeChart chart = ChartFactory.createXYLineChart(
-                "Temperature and mixing ratio over time",
+                "Weather Diagram",
                 "Time (UTC)",
                 "Temperature (deg C)",
                 tempDataset,
@@ -143,14 +142,6 @@ public class GUI extends JFrame {
         plot.mapDatasetToRangeAxis(1, 1);
 
         // Dataset 2 -> dew point axis on the left.
-        //NumberAxis tdAxis =
-        //        new NumberAxis("dew point (deg C)");
-        //applyRange(tdAxis, tdDataset.getSeries(0));
-
-        //plot.setRangeAxis(0, tdAxis);
-        //plot.setRangeAxisLocation(
-        //        0, AxisLocation.BOTTOM_OR_LEFT);
-
         tdRenderer.setSeriesPaint(0, Util.TD_COLOR);
         tdRenderer.setSeriesStroke(0, new BasicStroke(2f));
 
