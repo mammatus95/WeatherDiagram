@@ -27,8 +27,8 @@ class CsvReaderTest {
     void testParsesValidRows() throws Exception {
         Path file = csv(
                 "Time;Temperature;MixingRatio",
-                "2026-01-01T12:00:00;20.5;0.008",
-                "2026-01-01T13:00:00;21.2;0.009"
+                "2026-01-01T12:00:00;1013.5;20.5;0.008",
+                "2026-01-01T13:00:00;1013.5;21.2;0.009"
         );
 
         List<Meteo.Measurement> result = CsvReader.read(file);
@@ -45,12 +45,12 @@ class CsvReaderTest {
     void testDecimalSeparator() throws Exception {
         Path file = csv(
                 "Time;Temperature;MixingRatio",
-                "2026-01-01T12:00:00;20,5;0,008"
+                "2026-01-01T12:00:00;1013.5;20,5;0,008"
         );
 
         List<Meteo.Measurement> result = CsvReader.read(file);
 
-        assertEquals(2, result.size());
+        assertEquals(1, result.size());
 
         Meteo.Measurement first = result.getFirst();
         assertEquals(LocalDateTime.of(2026, 1, 1, 12, 0), first.time());
@@ -63,7 +63,7 @@ class CsvReaderTest {
         Path file = csv(
                 "Time;Temperature;MixingRatio",
                 "",
-                "2026-01-01T12:00:00;20.5;0.008"
+                "2026-01-01T12:00:00;1013.5;20.5;0.008"
         );
 
         assertEquals(1, CsvReader.read(file).size());
@@ -73,10 +73,11 @@ class CsvReaderTest {
     void testRejectsWrongColumnCount() throws Exception {
         Path file = csv(
                 "Time;Temperature;MixingRatio",
-                "2026-01-01T12:00:00;20.5"   // only 2 columns -> invalid
+                "2026-01-01T12:00:00;1013.5;20.5"   // only 3 columns -> invalid
         );
 
         assertThrows(IllegalArgumentException.class,
                 () -> CsvReader.read(file));
     }
 }
+
